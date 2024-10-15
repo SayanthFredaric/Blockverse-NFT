@@ -9,7 +9,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const getProducts = asyncHandler(async (req, res) => {
-	const products = await Product.find({ sold: false, isReadyForSale: false });
+	const products = await Product.find({ sold: false, isReadyForSale: true });
 	const finalProducts = products.map((product) => {
 		if (product.image) {
 			let buffer = Buffer.from(product.image);
@@ -63,7 +63,7 @@ const getProductsByCategory = asyncHandler(async (req, res) => {
 	const products = await Product.find({
 		category,
 		sold: false,
-		isReadyForSale: false,
+		isReadyForSale: true,
 	});
 
 	const finalProducts = products.map((product) => {
@@ -212,7 +212,7 @@ const purchaseProduct = asyncHandler(async (req, res) => {
 	}
 
 	req.user.walletAddress = walletAddress;
-	product.isReadyForSale = true;
+	product.isReadyForSale = false;
 	product.orderedBy = _id;
 	await product.save();
 	await req.user.save();
